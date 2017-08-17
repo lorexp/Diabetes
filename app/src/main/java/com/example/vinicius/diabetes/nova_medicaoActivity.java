@@ -4,13 +4,19 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by vinicius on 13/08/17.
@@ -20,6 +26,8 @@ public class nova_medicaoActivity extends Activity {
     private int dia,ano,mes,horas,min;
     private Button data;
     private Button hora;
+    private DataBaseHelper helper;
+    private EditText valorMedido,nph,acaoRapida,observacoes;
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
@@ -34,6 +42,11 @@ public class nova_medicaoActivity extends Activity {
         hora = (Button)findViewById(R.id.hora);
         data.setText(dia+"/"+mes+"/"+ano);
         hora.setText(horas+":"+min);
+        valorMedido = (EditText) findViewById(R.id.valorMedido);
+        nph = (EditText) findViewById(R.id.nph);
+        acaoRapida = (EditText) findViewById(R.id.acaoRapida);
+        observacoes = (EditText) findViewById(R.id.observacoes);
+        helper = new DataBaseHelper(this);
     }
     public void selecionarOpcao(View v){
         showDialog(v.getId());
@@ -48,6 +61,45 @@ public class nova_medicaoActivity extends Activity {
             return new TimePickerDialog(this,timePickerDialog,horas,min,true);
         }
         return null;
+    }
+    public void Salvar(View v){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat hora_format = new SimpleDateFormat("HH:mm");
+        long data_banco,hora_banco;
+        ContentValues values = new ContentValues();
+        try {
+            Date date = sdf.parse(data.getText().toString());
+            Date hora_long = hora_format.parse(hora.getText().toString());
+            data_banco = date.getTime();
+            hora_banco = hora_long.getTime();
+            values.put("data",data_banco);
+            values.put("hora",hora_banco);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        values.put("valorMedido",Integer.parseInt(valorMedido.getText().toString()));
+        values.put("nph",Integer.parseInt(nph.getText().toString()));
+        values.put("acaoRapida",Integer.parseInt(acaoRapida.getText().toString()));
+        values.put("observacoes",observacoes.getText().toString());
+
+        long resultado = db.insert("Diabetes",null,values);
+        if(resultado != -1){
+            Toast.makeText(this,"Inseriu",Toast.LENGTH_SHORT).show();
+            valorMedido.setText("");
+            nph.setText("");
+            acaoRapida.setText("");
+            observacoes.setText("");
+
+        }else{
+            Toast.makeText(this,"Não inseriu",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        helper.close();
+        super.onDestroy();
     }
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {

@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/salvar"
             android:layout_gravity="center"
-            android:onClick="salvar"
+            android:onClick="Salvar"
             android:text="@string/salvar"/>
 
 

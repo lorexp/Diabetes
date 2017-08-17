@@ -15,6 +15,7 @@ public class Medicao implements Serializable {
     private int nph;
     private int acaoRapida;
     private String observacoes;
+    private int id;
 
 
 
@@ -65,5 +66,13 @@ public class Medicao implements Serializable {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
