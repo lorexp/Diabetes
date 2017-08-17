@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
@@ -106,6 +109,33 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
         getListView().setOnItemClickListener(this);
         registerForContextMenu(getListView());
 
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_listar, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.excluir) {
+            AdapterView.AdapterContextMenuInfo info =
+                    (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            Medicao medida = new Medicao();
+            Map<String, Object> valor =
+                    new HashMap<String, Object>();
+            valor = medicoes.get(info.position);
+            medicoes.remove(info.position);
+            getListView().invalidateViews();
+            SQLiteDatabase db = helper.getWritableDatabase();
+                String where [] = new String[]{String.valueOf(valor.get("id"))};
+                long result = db.delete("diabetes","_id = ?",where);
+                if(result != -1) {
+                    Toast.makeText(this, "Deletado com Sucesso", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+        }
+        return super.onContextItemSelected(item);
     }
 }
 

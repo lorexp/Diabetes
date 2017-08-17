@@ -127,21 +127,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:layout_width="125dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/editar"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_marginTop="50dp"
-                android:onClick="Editar"/>
+
 
             <Button
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:text="@string/excluir"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium"
