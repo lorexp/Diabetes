@@ -12,4 +12,6 @@
     <string name="acaoRapida">Insulina Ação Rápida (un)</string>
     <string name="salvar">Salvar</string>
     <string name="detalhes">Detalhes</string>
-</resources>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+s</resources>

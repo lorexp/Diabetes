@@ -91,5 +91,21 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
         getListView().setOnItemClickListener(this);
         registerForContextMenu(getListView());
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        String[] de = {
+                "data", "hora", "valorMedido", "nph", "acaoRapida"
+        };
+        int[] para = { R.id.data, R.id.hora,
+                R.id.valorMedido, R.id.nph, R.id.acaoRapida };
+        helper = new DataBaseHelper(this);
+        SimpleAdapter adapter = new SimpleAdapter(this,
+                listarMedicoes(), R.layout.lista_medicoes, de, para);
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
+        registerForContextMenu(getListView());
+
+    }
 }
 

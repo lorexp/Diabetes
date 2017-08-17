@@ -2,9 +2,12 @@ package com.example.vinicius.diabetes;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by vinicius on 14/08/17.
@@ -12,6 +15,8 @@ import android.widget.TextView;
 
 public class medicao_detalhadaActivity extends Activity {
     private TextView data,hora,valorMedido,nph,acaoRapida,observacoes;
+    private Medicao medida;
+    DataBaseHelper helper;
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
@@ -24,13 +29,23 @@ public class medicao_detalhadaActivity extends Activity {
         observacoes = (TextView) findViewById(R.id.observacoess);
 
         Intent intent = getIntent();
-        Medicao medida = (Medicao) intent.getSerializableExtra("medida");
+        medida = (Medicao) intent.getSerializableExtra("medida");
         data.setText(medida.getData());
         hora.setText(medida.getHora());
         valorMedido.setText((String.valueOf(medida.getValorMedido())));
         nph.setText(String.valueOf(medida.getNph()));
         acaoRapida.setText(String.valueOf(medida.getAcaoRapida()));
         observacoes.setText(medida.getObservacoes());
+        helper = new DataBaseHelper(this);
 
+    }
+    public void Excluir(View v){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String where [] = new String[]{String.valueOf(medida.getId())};
+        long result = db.delete("diabetes","_id = ?",where);
+        if(result != -1) {
+            Toast.makeText(this, "Deletado com Sucesso", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }
