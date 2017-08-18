@@ -16,7 +16,6 @@ import android.widget.Toast;
 public class medicao_detalhadaActivity extends Activity {
     private TextView data,hora,valorMedido,nph,acaoRapida,observacoes;
     private Medicao medida;
-    DataBaseHelper helper;
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
@@ -36,16 +35,6 @@ public class medicao_detalhadaActivity extends Activity {
         nph.setText(String.valueOf(medida.getNph()));
         acaoRapida.setText(String.valueOf(medida.getAcaoRapida()));
         observacoes.setText(medida.getObservacoes());
-        helper = new DataBaseHelper(this);
 
-    }
-    public void Excluir(View v){
-        SQLiteDatabase db = helper.getWritableDatabase();
-        String where [] = new String[]{String.valueOf(medida.getId())};
-        long result = db.delete("diabetes","_id = ?",where);
-        if(result != -1) {
-            Toast.makeText(this, "Deletado com Sucesso", Toast.LENGTH_SHORT).show();
-            finish();
-        }
     }
 }

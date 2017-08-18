@@ -23,6 +23,7 @@
         <activity android:name=".nova_medicaoActivity"></activity>
         <activity android:name=".lista_medicoesActivity"></activity>
         <activity android:name=".medicao_detalhadaActivity"></activity>
+        <activity android:name=".editarActivity"></activity>
 
     </application>
 

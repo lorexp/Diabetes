@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -19,35 +20,52 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by vinicius on 13/08/17.
+ * Created by vinicius on 17/08/17.
  */
 
-public class nova_medicaoActivity extends Activity {
+public class editarActivity extends Activity{
     private int dia,ano,mes,horas,min;
     private Button data;
+    private Button Salvar;
     private Button hora;
     private DataBaseHelper helper;
     private EditText valorMedido,nph,acaoRapida,observacoes;
+    private Medicao medida;
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
-        setContentView(R.layout.nova_medicao);
+        setContentView(R.layout.editar);
+        data = (Button) findViewById(R.id.data);
+        hora = (Button) findViewById(R.id.hora);
+        valorMedido = (EditText) findViewById(R.id.valorMedidoo);
+        nph = (EditText) findViewById(R.id.nphh);
+        acaoRapida = (EditText) findViewById(R.id.acaoRapidaa);
+        observacoes = (EditText) findViewById(R.id.observacoese);
+        Salvar = (Button) findViewById(R.id.salvar);
+        helper = new DataBaseHelper(this);
+
         Calendar calendar = Calendar.getInstance();
         ano = calendar.get(Calendar.YEAR);
         mes = calendar.get(Calendar.MONTH);
         dia = calendar.get(Calendar.DAY_OF_MONTH);
         horas = calendar.get(Calendar.HOUR_OF_DAY);
         min = calendar.get(Calendar.MINUTE);
-        data = (Button)findViewById(R.id.data);
-        hora = (Button)findViewById(R.id.hora);
-        data.setText(dia+"/"+(mes+1)+"/"+ano);
-        hora.setText(horas+":"+min);
-        valorMedido = (EditText) findViewById(R.id.valorMedido);
-        nph = (EditText) findViewById(R.id.nph);
-        acaoRapida = (EditText) findViewById(R.id.acaoRapida);
-        observacoes = (EditText) findViewById(R.id.observacoes);
-        helper = new DataBaseHelper(this);
+
+        Intent intent = getIntent();
+
+        medida = (Medicao) intent.getSerializableExtra("medida");
+
+        medida = (Medicao) intent.getSerializableExtra("medida");
+        data.setText(medida.getData());
+        hora.setText(medida.getHora());
+        valorMedido.setText((String.valueOf(medida.getValorMedido())));
+        nph.setText(String.valueOf(medida.getNph()));
+        acaoRapida.setText(String.valueOf(medida.getAcaoRapida()));
+        observacoes.setText(medida.getObservacoes());
+
+
     }
+
     public void selecionarOpcao(View v){
         showDialog(v.getId());
     }
@@ -62,7 +80,34 @@ public class nova_medicaoActivity extends Activity {
         }
         return null;
     }
-    public void Salvar(View v){
+
+    @Override
+    public void onDestroy(){
+        helper.close();
+        super.onDestroy();
+    }
+
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view,
+                              int year, int monthOfYear, int dayOfMonth) {
+            ano = year;
+            mes = monthOfYear;
+            dia = dayOfMonth;
+            data.setText(dia + "/" + (mes + 1) + "/" + ano);
+        }
+    };
+    protected TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener(){
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay,
+                              int minute) {
+
+            horas = hourOfDay;
+            min = minute;
+            hora.setText(horas+ ":" +min);
+        }
+    };
+    public void Editar(View view){
         SQLiteDatabase db = helper.getWritableDatabase();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat hora_format = new SimpleDateFormat("HH:mm");
@@ -83,43 +128,14 @@ public class nova_medicaoActivity extends Activity {
         values.put("acaoRapida",Integer.parseInt(acaoRapida.getText().toString()));
         values.put("observacoes",observacoes.getText().toString());
 
-        long resultado = db.insert("Diabetes",null,values);
-        if(resultado != -1){
-            Toast.makeText(this,"Inseriu",Toast.LENGTH_SHORT).show();
-            valorMedido.setText("");
-            nph.setText("");
-            acaoRapida.setText("");
-            observacoes.setText("");
+        String where [] = new String[]{String.valueOf(medida.getId())};
 
+        long result = db.update("diabetes",values,"_id = ?",where);
+        if(result > 0 ){
+            Toast.makeText(this,"Atualizou",Toast.LENGTH_SHORT);
+            finish();
         }else{
-            Toast.makeText(this,"Não inseriu",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Não Atualizou",Toast.LENGTH_SHORT);
         }
     }
-
-    @Override
-    public void onDestroy(){
-        helper.close();
-        super.onDestroy();
-    }
-
-    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view,
-                              int year, int monthOfYear, int dayOfMonth) {
-            ano = year;
-            mes = monthOfYear;
-            dia = dayOfMonth;
-            data.setText(dia + "/" + (mes + 1) + "/" + ano);
-        }
-    };
-    protected TimePickerDialog.OnTimeSetListener timePickerDialog = new TimePickerDialog.OnTimeSetListener(){
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay,
-                                      int minute) {
-
-                    horas = hourOfDay;
-                    min = minute;
-                    hora.setText(horas+ ":" +min);
-                }
-            };
 }
