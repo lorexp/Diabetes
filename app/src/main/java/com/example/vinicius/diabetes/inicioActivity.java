@@ -25,6 +25,8 @@ public class inicioActivity extends Activity {
             case R.id.medicoes:
                 startActivity(new Intent(this, lista_medicoesActivity.class));
                 break;
+            case R.id.opcoes:
+                startActivity(new Intent(this,relatorioActivity.class));
         }
     }
 }

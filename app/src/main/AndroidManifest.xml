@@ -24,6 +24,7 @@
         <activity android:name=".lista_medicoesActivity"></activity>
         <activity android:name=".medicao_detalhadaActivity"></activity>
         <activity android:name=".editarActivity"></activity>
+        <activity android:name=".relatorioActivity"></activity>
 
     </application>
 

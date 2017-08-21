@@ -61,7 +61,7 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
 
     private List<Map<String, Object>> listarMedicoes() {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id,data,hora,valorMedido,nph,acaoRapida,observacoes FROM diabetes order by data;",null);
+        Cursor cursor = db.rawQuery("SELECT _id,data,hora,valorMedido,nph,acaoRapida,observacoes FROM diabetes order by data desc,hora desc;",null);
         cursor.moveToFirst();
         medicoes = new ArrayList<Map<String, Object>>();
         for(int i = 0;i<cursor.getCount();i++){
