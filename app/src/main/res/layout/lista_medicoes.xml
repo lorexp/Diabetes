@@ -4,30 +4,34 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:background="#000000">
+    android:background="#FFFFFF">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#FFFFFF">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/data"
             android:textStyle="bold"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/hora"
             android:textStyle="bold"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/valorMedido"
             android:textStyle="bold"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
@@ -35,6 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/nph"
             android:textStyle="bold"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
@@ -42,6 +47,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/acaoRapida"
             android:textStyle="bold"
+            android:textColor="#000000"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     </LinearLayout>

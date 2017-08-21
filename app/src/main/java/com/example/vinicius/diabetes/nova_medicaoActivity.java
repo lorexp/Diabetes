@@ -85,7 +85,7 @@ public class nova_medicaoActivity extends Activity {
 
         long resultado = db.insert("Diabetes",null,values);
         if(resultado != -1){
-            Toast.makeText(this,"Inseriu",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Medição Inserida",Toast.LENGTH_SHORT).show();
             valorMedido.setText("");
             nph.setText("");
             acaoRapida.setText("");

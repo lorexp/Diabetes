@@ -35,12 +35,23 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
                             int position, long id) {
         Map<String, Object> map = medicoes.get(position);
         Medicao medida = new Medicao();
+        String glicose,insu_nph,insu_rapida;
+        String[] spliter;
+        glicose = map.get("valorMedido").toString();
+        spliter = glicose.split(":");
+        glicose = spliter[1];
+        insu_nph = map.get("nph").toString();
+        spliter = insu_nph.split(":");
+        insu_nph = spliter[1];
+        insu_rapida = map.get("acaoRapida").toString();
+        spliter = insu_rapida.split(":");
+        insu_rapida = spliter[1];
         medida.setId(Integer.parseInt(map.get("id").toString()));
         medida.setData(map.get("data").toString());
         medida.setHora(map.get("hora").toString());
-        medida.setValorMedido(Integer.parseInt(map.get("valorMedido").toString()));
-        medida.setNph(Integer.parseInt(map.get("nph").toString()));
-        medida.setAcaoRapida(Integer.parseInt(map.get("acaoRapida").toString()));
+        medida.setValorMedido(Integer.parseInt(glicose));
+        medida.setNph(Integer.parseInt(insu_nph));
+        medida.setAcaoRapida(Integer.parseInt(insu_rapida));
         medida.setObservacoes(map.get("observacoes").toString());
 
         Intent intent = new Intent(this,medicao_detalhadaActivity.class);
@@ -68,9 +79,9 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
             item.put("id",cursor.getInt(0));
             item.put("data",sdf.format(data));
             item.put("hora",simpleDateFormat.format(hora));
-            item.put("valorMedido",cursor.getInt(3));
-            item.put("nph",cursor.getInt(4));
-            item.put("acaoRapida",cursor.getInt(5));
+            item.put("valorMedido","Valor Medido:"+cursor.getInt(3));
+            item.put("nph","NPH:"+cursor.getInt(4));
+            item.put("acaoRapida","Ação Rápida:"+cursor.getInt(5));
             item.put("observacoes",cursor.getString(6));
             medicoes.add(item);
             cursor.moveToNext();
@@ -141,12 +152,23 @@ public class lista_medicoesActivity extends ListActivity implements AdapterView.
             Map<String, Object> valor =
                     new HashMap<String, Object>();
             valor = medicoes.get(info.position);
+            String glicose,insu_nph,insu_rapida;
+            String[] spliter;
+            glicose = valor.get("valorMedido").toString();
+            spliter = glicose.split(":");
+            glicose = spliter[1];
+            insu_nph = valor.get("nph").toString();
+            spliter = insu_nph.split(":");
+            insu_nph = spliter[1];
+            insu_rapida = valor.get("acaoRapida").toString();
+            spliter = insu_rapida.split(":");
+            insu_rapida = spliter[1];
             medida.setId(Integer.parseInt(valor.get("id").toString()));
             medida.setData(valor.get("data").toString());
             medida.setHora(valor.get("hora").toString());
-            medida.setValorMedido(Integer.parseInt(valor.get("valorMedido").toString()));
-            medida.setNph(Integer.parseInt(valor.get("nph").toString()));
-            medida.setAcaoRapida(Integer.parseInt(valor.get("acaoRapida").toString()));
+            medida.setValorMedido(Integer.parseInt(glicose));
+            medida.setNph(Integer.parseInt(insu_nph));
+            medida.setAcaoRapida(Integer.parseInt(insu_rapida));
             medida.setObservacoes(valor.get("observacoes").toString());
 
             Intent intent = new Intent(this,editarActivity.class);
