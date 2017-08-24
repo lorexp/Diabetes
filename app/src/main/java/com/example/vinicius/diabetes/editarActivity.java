@@ -55,7 +55,6 @@ public class editarActivity extends Activity{
 
         medida = (Medicao) intent.getSerializableExtra("medida");
 
-        medida = (Medicao) intent.getSerializableExtra("medida");
         data.setText(medida.getData());
         hora.setText(medida.getHora());
         valorMedido.setText((String.valueOf(medida.getValorMedido())));
